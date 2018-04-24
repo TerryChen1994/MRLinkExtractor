@@ -1,0 +1,14 @@
+%15/11/2017
+#将ATRM进行改进用于Hadoop集群上提取锚文本
+#对ClueWeb的20个segment(0-19)进行锚文本提取，每个segment生成一个output文件
+#pom.xml描写了自定义类中对其他包如hadoop的引用关系
+#MapRed包包含了mapreducer的Driver，Mapper，Reducer类
+#common包包含了自定义输入流
+#entity包包含了对实体定义的类
+#inputformat包包含了Mapper对文件进行读取的策略，不是文件的输入流类
+#parser包包含了读取文件并提取锚文本的流程控制类
+#reader包包含了读取文件并提取锚文本的具体实现类
+
+%12/12/2017
+#MRLinkExtractorReducer将不再作为Combiner类来进行中间处理，交由MRLinkExtractorCombiner类来进行
+#MRLinkExtractorMultyJob包含了多个作业按照顺序执行
