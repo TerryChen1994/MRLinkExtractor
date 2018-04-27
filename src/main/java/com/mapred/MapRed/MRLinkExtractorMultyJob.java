@@ -37,7 +37,7 @@ public class MRLinkExtractorMultyJob {
 		}
 
 
-		JobControl jc = new JobControl("MRURLCollect from 00 to 19");
+		JobControl jc = new JobControl("MRLinkExtractorMultyJob from 00 to 19");
 		for(int i = 0; i< 20;i++){
 			jc.addJob(cjobList[i]);
 		}
