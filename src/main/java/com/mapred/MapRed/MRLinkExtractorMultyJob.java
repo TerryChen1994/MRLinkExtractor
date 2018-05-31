@@ -97,6 +97,7 @@ public static Job iniJob(Configuration conf, int num) throws Exception{
 		job.setInputFormatClass(RecordInputFormat.class);
 
 		job.setReducerClass(MRLinkExtractorReducer.class);
+		job.setOutputFormatClass(AnchorURLOutputFormat.class);
 		job.setOutputKeyClass(Text.class);
 		job.setOutputValueClass(Text.class);
 

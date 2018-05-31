@@ -282,6 +282,8 @@ public class ContentReaderGZIP {
 		if (sHref.length() > 0) {
 			try {
 				URL url = new URL(new URL(uri), sHref);
+				url.getAuthority();
+				url.getProtocol();
 				sHref = url.toString();
 				validHref = true;
 			} catch (Exception e) {
