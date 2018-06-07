@@ -25,33 +25,27 @@ public class ContentReaderGZIP {
 		// 为了输出未能成功配对的AnchorTag的内容，用来计算该内容的长度的下标
 		int indexOfErrTag = 0;
 
-		// 循环读取字节
+		//
 		label1: while (true) {
 			int c = ebis.read();
 			if (isEnd(c)) {
 				break label1;
 			}
-
-			// 识别字符 '<'
 			if (c == 60) {
 				c = ebis.read();
 				if (isEnd(c)) {
 					break label1;
 				}
-
-				// 识别字符 'a' 或 'A'
 				if (c == 65 || c == 97) {
 					c = ebis.read();
 					if (isEnd(c)) {
 						break label1;
 					}
-
-					// 识别'空格'或'换行符'
 					if (c <= 32) {
-
-						// 识别"<a "成功，回撤3个字符，将"<a "写入输出流
 						ebis.markTag(3);
 						ebis.reset();
+
+						//
 						baos = new ByteArrayOutputStream();
 						indexOfErrTag = 0;
 						for (int i = 0; i < 3; i++) {
@@ -59,8 +53,6 @@ public class ContentReaderGZIP {
 							baos.write(c);
 							indexOfErrTag++;
 						}
-
-						// 读取<a标签里的内容
 						label2: while (true) {
 							c = ebis.read();
 							if (isEnd(c)) {
@@ -92,6 +84,7 @@ public class ContentReaderGZIP {
 										ebis.markTag(3);
 										ebis.reset();
 										baos.write(13);
+										// extractAnchorText(baos, anchorList);
 										extractAndProcessAnchorText(baos, anchorList, uri);
 
 										// 显示未能成功配对的AnchorTag之间的内容
@@ -280,6 +273,9 @@ public class ContentReaderGZIP {
 		String sHref = new String(href.toByteArray());
 		sHref = replaceCR(sHref);
 		if (sHref.length() > 0) {
+			if (sHref.equals("#")) {
+				sHref = "";
+			}
 			try {
 				URL url = new URL(new URL(uri), sHref);
 				url.getAuthority();
@@ -289,6 +285,7 @@ public class ContentReaderGZIP {
 			} catch (Exception e) {
 				validHref = false;
 			}
+
 			if (validHref) {
 				if (sHref.startsWith("http://") || sHref.startsWith("https://")) {
 					outHref.write(sHref.getBytes());
@@ -302,7 +299,7 @@ public class ContentReaderGZIP {
 			validHref = false;
 		}
 
-		if (validHref = true) {
+		if (validHref) {
 			/* 锚文本处理模块 */
 			String sAnchorText = new String(anchorText.toByteArray());
 			sAnchorText = sAnchorText.replaceAll("&nbsp;", " ");

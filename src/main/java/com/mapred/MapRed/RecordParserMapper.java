@@ -8,11 +8,14 @@ import org.apache.hadoop.mapreduce.Mapper;
 
 import entity.RecordContent;
 import entity.RecordHeader;
+import entity.TextPair;
 import parser.ContentParserGZIP;
 
-public class MRLinkExtractorMapper extends Mapper<RecordHeader, RecordContent, Text, Text> {
+public class RecordParserMapper extends Mapper<RecordHeader, RecordContent, TextPair, Text> {
 
+	@Override
 	public void map(RecordHeader key, RecordContent value, Context context) throws IOException, InterruptedException {
+		// TODO Auto-generated method stub
 		long lastProgressTS = 0; // 上一次发心跳的时间点
 		long heartBeatInterval = 100000L; // 主动发心跳的间隔，100s，默认600s超时
 		
@@ -24,7 +27,7 @@ public class MRLinkExtractorMapper extends Mapper<RecordHeader, RecordContent, T
 		StringBuilder anchor = null;
 		StringBuilder linkUri = null;
 		StringBuilder outputString = null;
-		Text outputKey = null;
+//		Text outputKey = null;
 		Text outputValue = null;
 		
 		try {
@@ -37,9 +40,9 @@ public class MRLinkExtractorMapper extends Mapper<RecordHeader, RecordContent, T
 					anchor = new StringBuilder(uriAnchor[1]);
 					linkUri = new StringBuilder(key.getWarcTargetUri());
 					outputString = new StringBuilder(anchor + "\t" + linkUri);
-					outputKey = new Text(tarUri.toString());
+//					outputKey = new Text(tarUri.toString());
 					outputValue = new Text(outputString.toString());
-					context.write(outputKey, outputValue);
+					context.write(new TextPair(tarUri.toString(), "1"), outputValue);
 				}
 				tarUri.setLength(0);
 				anchor.setLength(0);
@@ -58,7 +61,6 @@ public class MRLinkExtractorMapper extends Mapper<RecordHeader, RecordContent, T
 			}
 			
 		}
-
 	}
 
 }
