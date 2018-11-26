@@ -14,8 +14,12 @@ public class URLParserMapper extends Mapper<LongWritable, Text, TextPair, Text>{
 	protected void map(LongWritable key, Text value, Context context)
 			throws IOException, InterruptedException {
 		// TODO Auto-generated method stub
-		String sValue = value.toString().trim();
-		context.write(new TextPair(sValue, "0"), new Text("exist"));
+		String[] sList = value.toString().split("\t");
+		//sList[0] = 目标URL
+		//sList[1] = 目标URL的WarcRecordID
+		//sList[2] = 目标URL的pagerank值
+		context.write(new TextPair(sList[0], "0"), new Text("exist" + " " + sList[1] + " " + sList[2]));
+		
 	}
 	
 }

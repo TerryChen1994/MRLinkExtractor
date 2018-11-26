@@ -14,7 +14,12 @@ public class MRLinkExtractorReducer extends Reducer<TextPair, Text, Text, Text> 
 
 		Iterator<Text> iter = values.iterator();
 		Text exist = new Text(iter.next());
-		if (exist.toString().equals("exist")) {
+		
+		String[] sList = exist.toString().split(" ");
+		
+		if(sList.length >= 3 && sList[0].equals("exist")){
+			Text outKey = new Text(key.getFirst() + " " + sList[1] + " " + sList[2]);
+			
 			boolean firstKey = true;
 			StringBuilder sb = new StringBuilder();
 			int count = 0;
@@ -24,7 +29,7 @@ public class MRLinkExtractorReducer extends Reducer<TextPair, Text, Text, Text> 
 				sb.append(value);
 				sb.append("\t");
 				if (sb.length() > 10000000) {
-					context.write(firstKey ? key.getFirst() : null, new Text(sb.toString()));
+					context.write(firstKey ? outKey : null, new Text(sb.toString()));
 					firstKey = false;
 					sb.setLength(0);
 				}
@@ -34,7 +39,7 @@ public class MRLinkExtractorReducer extends Reducer<TextPair, Text, Text, Text> 
 				}
 			}
 			if (count > 0) {
-				context.write(firstKey ? key.getFirst() : null, new Text(sb.toString().trim()));
+				context.write(firstKey ? outKey : null, new Text(sb.toString().trim()));
 				sb.setLength(0);
 			}
 		}
