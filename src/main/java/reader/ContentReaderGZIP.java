@@ -360,17 +360,17 @@ public class ContentReaderGZIP {
 			anchorList.write(outHref.toByteArray());
 			anchorList.write(9);
 			anchorList.write(outAnchorText.toByteArray());
-			anchorList.write(13);
+			anchorList.write(10);
 		}
 
 	}
 
 	public String replaceCR(String s) {
-		// s = s.replaceAll("&nbsp;", " ");
-		s = s.replaceAll("&amp;", "&");
-		s = s.replaceAll("&lt;", "<");
-		s = s.replaceAll("&gt;", ">");
-		s = s.replaceAll("&quot;", "\"");
+		s = s.replaceAll(" ", "&nbsp;");
+		s = s.replaceAll("&", "&amp;");
+		s = s.replaceAll("<", "&lt;");
+		s = s.replaceAll(">", "&gt;");
+		s = s.replaceAll("\"", "&quot;");
 		return s;
 	}
 
